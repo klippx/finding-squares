@@ -13,9 +13,12 @@ export const findBranches = (target, source) => {
   return possibleBranches
 }
 
-export const deepSearch = (target, source) => {
-  // console.log(`deepSearch: target = [${target.toString()}], source = [${source.toString()}]`)
+const pullStartValue = (source, number) => {
+  const index = source.indexOf(number)
+  return source.splice(index, 1)[0]
+}
 
+export const deepSearch = (target, source) => {
   if (source.length === 0) {
     console.log('Search ended because source is empty', target)
     return target
@@ -23,18 +26,17 @@ export const deepSearch = (target, source) => {
 
   const branches = findBranches(target, source)
   if (branches.length === 0) {
-    // console.log('Search ended because no more viable branches found', target)
     return -1
   }
 
-  // console.log('branches', branches)
   let searchResults = []
   branches.forEach(branchingNumber => {
     const newSource = source.slice()
     const newTarget = target.slice()
-    const index = source.indexOf(branchingNumber)
-    const start = newSource.splice(index, 1)[0]
+
+    const start = pullStartValue(newSource, branchingNumber)
     newTarget.push(start)
+
     const result = deepSearch(newTarget, newSource)
 
     if (result !== -1 && result.length !== 0) {
@@ -45,7 +47,7 @@ export const deepSearch = (target, source) => {
   return searchResults
 }
 
-const square = () => {
+export default () => {
   const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   let searchResults = []
 
@@ -54,7 +56,7 @@ const square = () => {
     let source = NUMBERS.slice()
     let target = []
 
-    const start = source.splice(source.indexOf(number), 1)[0]
+    const start = pullStartValue(source, number)
     target.push(start)
 
     const result = deepSearch(target, source)
@@ -66,5 +68,3 @@ const square = () => {
 
   return searchResults
 }
-
-export default square
