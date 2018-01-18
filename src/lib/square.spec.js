@@ -46,7 +46,7 @@ describe('deepSearch', () => {
 
 describe('square', () => {
   it('finds all solutions', () => {
-    expect(square()).toEqual([
+    expect(square([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])).toEqual([
       [8, 1, 15, 10, 6, 3, 13, 12, 4, 5, 11, 14, 2, 7, 9],
       [9, 7, 2, 14, 11, 5, 4, 12, 13, 3, 6, 10, 15, 1, 8],
     ])

@@ -13,9 +13,15 @@ export const findBranches = (target, source) => {
   return possibleBranches
 }
 
-const pullStartValue = (source, number) => {
-  const index = source.indexOf(number)
-  return source.splice(index, 1)[0]
+const search = (number, source, target) => {
+  let newSource = source.slice()
+  let newTarget = target.slice()
+
+  const index = newSource.indexOf(number)
+  const start = newSource.splice(index, 1)[0]
+  newTarget.push(start)
+
+  return deepSearch(newTarget, newSource)
 }
 
 export const deepSearch = (target, source) => {
@@ -31,40 +37,27 @@ export const deepSearch = (target, source) => {
 
   let searchResults = []
   branches.forEach(branchingNumber => {
-    const newSource = source.slice()
-    const newTarget = target.slice()
-
-    const start = pullStartValue(newSource, branchingNumber)
-    newTarget.push(start)
-
-    const result = deepSearch(newTarget, newSource)
+    const result = search(branchingNumber, source, target)
 
     if (result !== -1 && result.length !== 0) {
       searchResults = result
     }
-  }, searchResults)
+  })
 
   return searchResults
 }
 
-export default () => {
-  const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+export default NUMBERS => {
   let searchResults = []
 
   // Try different starting numbers
-  NUMBERS.forEach(number => {
-    let source = NUMBERS.slice()
-    let target = []
-
-    const start = pullStartValue(source, number)
-    target.push(start)
-
-    const result = deepSearch(target, source)
+  NUMBERS.forEach(seed => {
+    const result = search(seed, NUMBERS, [])
 
     if (result.length === NUMBERS.length) {
       searchResults.push(result)
     }
-  }, searchResults)
+  })
 
   return searchResults
 }
